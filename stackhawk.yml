@@ -9,10 +9,28 @@ app:
 
 authentication:
   enabled: true
-  type: cookie
-  cookie:
-    name: continueCode      # Juice Shop session cookie name
-    value: v7BmaPZbQ7NroLqvm1YzMVnwOBAVWtefYXdgpE5jkJlXey43R68K2D9xWNQg
+  type: api
+
+  login:
+    url: https://juice-shop-production-b81d.up.railway.app/rest/user/login
+    method: POST
+    headers:
+      Content-Type: application/json
+    body: |
+      {
+        "email": "admin@juice-sh.op",
+        "password": "admin123"
+      }
+
+  token:
+    extract:
+      type: json
+      jsonPath: $.authentication.token
+
+    transport:
+      type: header
+      name: Authorization
+      valuePrefix: Bearer 
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
   # Configuration Docs: https://docs.stackhawk.com/hawkscan/configuration/
