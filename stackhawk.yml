@@ -7,30 +7,34 @@ app:
   # -- The url of your application to scan --
   host: https://juice-shop-production-b81d.up.railway.app # (required)
 
+
+# Maintain the Authorization header for the session
+sessionTokens:
+  - Authorization
+
 authentication:
-  enabled: true
-  type: api
+  loggedInIndicator: ".*"
+  loggedOutIndicator: "null"
 
-  login:
-    url: https://juice-shop-production-b81d.up.railway.app/rest/user/login
-    method: POST
-    headers:
-      Content-Type: application/json
-    body: |
-      {
-        "email": "admin@juice-sh.op",
-        "password": "admin123"
-      }
+  external:
+    # Juice Shop uses JWT token auth
+    type: TOKEN
 
-  token:
-    extract:
-      type: json
-      jsonPath: $.authentication.token
+    # Hard-coded Authorization header (FOR TESTING ONLY)
+    value: Authorization=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdGF0dXMiOiJzdWNjZXNzIiwiZGF0YSI6eyJpZCI6MSwidXNlcm5hbWUiOiIiLCJlbWFpbCI6ImFkbWluQGp1aWNlLXNoLm9wIiwicGFzc3dvcmQiOiIwMTkyMDIzYTdiYmQ3MzI1MDUxNmYwNjlkZjE4YjUwMCIsInJvbGUiOiJhZG1pbiIsImRlbHV4ZVRva2VuIjoiIiwibGFzdExvZ2luSXAiOiIiLCJwcm9maWxlSW1hZ2UiOiJhc3NldHMvcHVibGljL2ltYWdlcy91cGxvYWRzL2RlZmF1bHRBZG1pbi5wbmciLCJ0b3RwU2VjcmV0IjoiIiwiaXNBY3RpdmUiOnRydWUsImNyZWF0ZWRBdCI6IjIwMjYtMDItMjMgMTQ6MDc6MzYuNTI4ICswMDowMCIsInVwZGF0ZWRBdCI6IjIwMjYtMDItMjMgMTQ6MDc6MzYuNTI4ICswMDowMCIsImRlbGV0ZWRBdCI6bnVsbH0sImlhdCI6MTc3MTg1NjM4NH0.ed2SPm_AuZ2_DYTtZts62qzGaSlx2s9Psk4I_KYkPsUJbyH_MEbosG4IfOSEhk4MIfLN7aIL9VkR6BvpWUNtrZX1oI9aTe_FqTFhanUx85j2RYQX2yJhqdg0oLy8Lcd1vhYnYo5n311W-6CDPhq63StFjUvv67UndliWK82VINU
 
-    transport:
-      type: header
-      name: Authorization
-      valuePrefix: Bearer 
+  # Cookie-based auth intentionally NOT used
+  cookieAuthorization:
+    cookieNames: []
+
+  # Confirm auth is working
+  testPath:
+    type: BODY
+    path: /rest/user/whoami
+
+    # Authenticated = response is NOT "null"
+    success: "^(?!\\s*null\\s*$).+"
+
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
   # Configuration Docs: https://docs.stackhawk.com/hawkscan/configuration/
