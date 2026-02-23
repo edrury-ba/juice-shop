@@ -9,16 +9,10 @@ app:
 
 authentication:
   enabled: true
-  testPath:
-    path: /rest/user/whoami
-    method: GET
-    success: '"email":"jamessmith@ba.com"'
-  loginPath:
-    path: /rest/user/login
-    method: POST
-    requestBody: '{"email":"jamessmith@ba.com","password":"12345"}'
-    requestHeaders:
-      Content-Type: application/json
+  type: cookie
+  cookie:
+    name: continueCode      # Juice Shop session cookie name
+    value: v7BmaPZbQ7NroLqvm1YzMVnwOBAVWtefYXdgpE5jkJlXey43R68K2D9xWNQg
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
   # Configuration Docs: https://docs.stackhawk.com/hawkscan/configuration/
