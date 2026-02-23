@@ -7,6 +7,18 @@ app:
   # -- The url of your application to scan --
   host: https://juice-shop-production-b81d.up.railway.app # (required)
 
+authentication:
+  enabled: true
+  testPath:
+    path: /rest/user/whoami
+    method: GET
+    success: '"email":"jamessmith@ba.com"'
+  loginPath:
+    path: /rest/user/login
+    method: POST
+    requestBody: '{"email":"jamessmith@ba.com","password":"12345"}'
+    requestHeaders:
+      Content-Type: application/json
 
 # -- Customized Configuration for GraphQL/SOAP/OpenAPI, add here --
   # Configuration Docs: https://docs.stackhawk.com/hawkscan/configuration/
